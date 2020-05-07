@@ -7,7 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+import neil1648.cs360.ui.ra.RAParser;
+import neil1648.cs360.ui.ra.expr.RAExpression;
+import neil1648.cs360.ui.sql.SQLQuery;
 import neil1648.cs360.ui.util.Assets;
+import neil1648.cs360.ui.util.Debug;
 import neil1648.cs360.ui.util.MetaData;
 
 public class RAInputScreen extends BaseScreen {
@@ -53,7 +57,10 @@ public class RAInputScreen extends BaseScreen {
 		
 		this.generateButton.setPosition(MetaData.VIRTUAL_WIDTH-20f, 20f, Align.bottomRight);
 		
+		this.displayLabel.setSize(MetaData.VIRTUAL_WIDTH-200f, MetaData.VIRTUAL_HEIGHT-200f);
 		this.displayLabel.setPosition(MetaData.VIRTUAL_WIDTH/2f, MetaData.VIRTUAL_HEIGHT/2f, Align.center);
+		this.displayLabel.setAlignment(Align.topLeft);
+		this.displayLabel.setWrap(true);
 	}
 	
 	private void setListeners() {
@@ -61,7 +68,8 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("PROJ button clicked");
+				Debug.log("PROJ button clicked");
+				write("PROJ");
 			}
 			
 		});
@@ -69,7 +77,8 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("SLCT button clicked");
+				Debug.log("SLCT button clicked");
+				write("SLCT");
 			}
 			
 		});
@@ -77,7 +86,8 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("AGGR button clicked");
+				Debug.log("AGGR button clicked");
+				write("AGGR");
 			}
 			
 		});
@@ -85,7 +95,8 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("RNAM button clicked");
+				Debug.log("RNAM button clicked");
+				write("RNAM");
 			}
 			
 		});
@@ -93,7 +104,8 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("JOIN button clicked");
+				Debug.log("JOIN button clicked");
+				write("JOIN");
 			}
 			
 		});
@@ -102,10 +114,15 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("RA Expression confirmed. Generating equivalent MySQL...");
+				Debug.log("RA Expression confirmed. Generating equivalent MySQL...");
 			}
 			
 		});
+	}
+	
+	private void write(String token) {
+		Debug.logv("Writing to displayLabel... " + token);
+		this.displayLabel.setText(displayLabel.getText() + " " + token);
 	}
 	
 	@Override
@@ -116,8 +133,16 @@ public class RAInputScreen extends BaseScreen {
 		this.configureWidgets();
 		this.setListeners();
 		
-		//RAParser rap = new RAParser();
-		//rap.run();
+		RAParser rap = new RAParser();
+		RAExpression rae = rap.run();
+		Debug.log(rae);
+		
+		SQLQuery sqlq = new SQLQuery();
+		sqlq.addSelection("col0");
+		sqlq.addSelection("col1");
+		sqlq.setFromTarget("tbl0");
+		sqlq.addCondition("cnd0");
+		Debug.log(sqlq);
 	}
 
 	@Override

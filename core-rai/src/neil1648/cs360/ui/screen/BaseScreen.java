@@ -25,7 +25,7 @@ public abstract class BaseScreen implements Screen {
 		this.stage.act();
 		this.update(delta);
 		
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+		Gdx.gl.glClearColor(0f, 0.6f, 0.8f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		this.stage.draw();
