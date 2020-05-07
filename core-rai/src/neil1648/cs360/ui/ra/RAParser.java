@@ -88,7 +88,7 @@ public class RAParser {
 				}
 				//Expression started
 				else if (tmpState != STATUS.END) {
-					Debug.log("Sub expression found! Resolving...");
+					Debug.log("Sub-expression found! Resolving...");
 					arg0 = sc.next();
 					currentExpr = newExpression(tmpState, arg0);
 				}
