@@ -25,6 +25,8 @@ public class Debug {
 		};
 	}
 	
+	public static void log() { Debug.log(""); }
+	
 	public static void logv(String s) {
 		switch (Debug.MODE) {
 		default:

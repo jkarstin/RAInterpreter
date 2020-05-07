@@ -4,14 +4,18 @@ import java.util.ArrayList;
 
 public class SQLQuery {
 	
+	private boolean distinct;
 	private ArrayList<String> selections;
 	private String fromTarget;
 	private ArrayList<String> conditions;
+	private ArrayList<String> filters;
 	
 	public SQLQuery() {
+		this.distinct = true;
 		this.selections = new ArrayList<String>();
 		this.fromTarget = "";
 		this.conditions = new ArrayList<String>();
+		this.filters = new ArrayList<String>();
 	}
 	
 	public int addSelection(String selectioni) {
@@ -44,9 +48,21 @@ public class SQLQuery {
 			this.addCondition(condition);
 	}
 	
+	public int addFilter(String filteri) {
+		int i = this.filters.size();
+		this.filters.add(filteri);
+		return i;
+	}
+	
+	public void addFilters(ArrayList<String> filters) {
+		for (String filter : filters)
+			this.addFilter(filter);
+	}
+	
 	@Override
 	public String toString() {
 		String str = "SELECT";
+		if (this.distinct) str += " DISTINCT";
 		if (this.selections.size() > 0)
 			for (String selection : this.selections)
 				str += " " + selection;
