@@ -36,7 +36,7 @@ public class RAParser {
 	 * Selection:
 	 * 		SLCT cnd0 [... cndn] FROM targ
 	 * Rename:
-	 * 		RNAM name FROM targ
+	 * 		RNAM name ONTO targ
 	 * Aggregation:
 	 * 		AGGR act0 [... actn] [GRUP grp0 [... grpn]] FROM targ
 	 * Join:
@@ -163,6 +163,8 @@ public class RAParser {
 				
 			/*** JOIN ***/
 			
+			//TODO: JOIN needs to have all arguments as RAExpression values rather than String
+				
 			case JOIN:
 				token = sc.next();
 				switch (token) {
@@ -216,7 +218,7 @@ public class RAParser {
 				token = sc.next();
 				switch (token) {
 				//Rename target is next
-				case "FROM":
+				case "ONTO":
 					pushState(STATUS.ASSN_Target);
 					break;
 				//Value is one of rename new names

@@ -9,6 +9,8 @@ import neil1648.cs360.ui.ra.expr.SimpleExpression;
 public class RAE2SQLQ {
 	
 	public static SQLQuery translate(RAExpression rae) {
+		if (rae == null) return null;
+		
 		SQLQuery sqlq = new SQLQuery();
 		
 		/*** MAGICAL TOP SECRET CONVERSION PROCESS SHHHH ***/
@@ -35,7 +37,6 @@ public class RAE2SQLQ {
 			case JOIN:
 				break;
 			default:
-				
 				break;
 			};
 			
