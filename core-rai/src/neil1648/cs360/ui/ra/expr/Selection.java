@@ -18,6 +18,10 @@ public class Selection extends RAExpression {
 		return i;
 	}
 	
+	public ArrayList<String> getConditions() {
+		return this.conditions;
+	}
+	
 	@Override
 	public void setTarget(RAExpression t) {
 		this.target = t;

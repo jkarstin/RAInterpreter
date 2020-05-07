@@ -19,6 +19,10 @@ public abstract class RAExpression {
 		this.target = null;
 	}
 	
+	public EXPR_TYPE getType() {
+		return this.type;
+	}
+	
 	public void setTarget(String t) {
 		this.target = new SimpleExpression(t);
 	}

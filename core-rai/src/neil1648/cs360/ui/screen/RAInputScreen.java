@@ -8,6 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+import neil1648.cs360.ui.ra.RAParser;
+import neil1648.cs360.ui.ra.expr.RAExpression;
+import neil1648.cs360.ui.sql.RAE2SQLQ;
+import neil1648.cs360.ui.sql.SQLQuery;
 import neil1648.cs360.ui.util.Assets;
 import neil1648.cs360.ui.util.Debug;
 import neil1648.cs360.ui.util.MetaData;
@@ -178,17 +182,14 @@ public class RAInputScreen extends BaseScreen {
 		
 		//TODO: Integrate GUI with RAParser to allow GUI to feed RAParser one token at a time and be able to change visual state based on RAParser's current state
 		
-		/*/
+		/**/
 		//Testing
 		RAParser rap = new RAParser();
 		RAExpression rae = rap.run();
 		Debug.log(rae);
 		
-		SQLQuery sqlq = new SQLQuery();
-		sqlq.addSelection("col0");
-		sqlq.addSelection("col1");
-		sqlq.setFromTarget("tbl0");
-		sqlq.addCondition("cnd0");
+		SQLQuery sqlq = RAE2SQLQ.translate(rae);
+		
 		Debug.log(sqlq);
 		/**/
 	}

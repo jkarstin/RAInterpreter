@@ -20,6 +20,11 @@ public class SQLQuery {
 		return i;
 	}
 	
+	public void addSelections(ArrayList<String> selections) {
+		for (String selection : selections)
+			this.addSelection(selection);
+	}
+	
 	public void setFromTarget(String target) {
 		this.fromTarget = target;
 	}
@@ -32,6 +37,11 @@ public class SQLQuery {
 		int i = this.conditions.size();
 		this.conditions.add(conditioni);
 		return i;
+	}
+	
+	public void addConditions(ArrayList<String> conditions) {
+		for (String condition : conditions)
+			this.addCondition(condition);
 	}
 	
 	@Override

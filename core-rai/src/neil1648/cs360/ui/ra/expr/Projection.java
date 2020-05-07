@@ -18,6 +18,10 @@ public class Projection extends RAExpression {
 		return i;
 	}
 	
+	public ArrayList<String> getColumns() {
+		return columns;
+	}
+	
 	@Override
 	public void setTarget(RAExpression t) {
 		this.target = t;
