@@ -25,6 +25,8 @@ public class RAE2SQLQ {
 			
 			switch (raeType) {
 			case PROJ:
+				//Handle conflict with AGGR, since the two are mutually exclusive
+				//Solution(?): if Aggregation columns are present, set FROM to the wrapped value of a new PROJ-based SQLQ
 				sqlq.addSelections(((Projection)currentExpr).getColumns());
 				break;
 			case SLCT:
@@ -33,6 +35,9 @@ public class RAE2SQLQ {
 			case RNAM:
 				break;
 			case AGGR:
+				//Add filters for group columns as ORDER BY
+				//Handle conflict with PROJ, since the two are mutually exclusive
+				//Solution(?): if Projection columns are present, set FROM to the wrapped value of a new AGGR-based SQLQ
 				break;
 			case JOIN:
 				break;

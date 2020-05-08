@@ -4,18 +4,23 @@ import java.util.ArrayList;
 
 public class Join extends RAExpression {
 
-	private ArrayList<String> arguments;
+	private ArrayList<RAExpression> arguments;
 	
-	public Join(String arg0) {
+	public Join(RAExpression arg0) {
 		super(EXPR_TYPE.JOIN);
-		this.arguments = new ArrayList<String>();
+		this.arguments = new ArrayList<RAExpression>();
 		this.arguments.add(arg0);
 	}
-
-	public int addArgument(String argi) {
+	public Join(String arg0) { this(new SimpleExpression(arg0)); }
+	
+	public int addArgument(RAExpression argi) {
 		int i = this.arguments.size();
 		this.arguments.add(argi);
 		return i;
+	}
+	
+	public int addArgument(String argi) {
+		return this.addArgument(new SimpleExpression(argi));
 	}
 	
 	@Override

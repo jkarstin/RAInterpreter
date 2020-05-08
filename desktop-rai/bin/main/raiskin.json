@@ -11,6 +11,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0
 		a: 1
 	}
+	light_grey: {
+		r: 0.89333326
+		g: 0.89333326
+		b: 0.89333326
+		a: 1
+	}
 	white: {
 		r: 1
 		g: 1
@@ -29,7 +35,22 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		font: OpenSans
 		fontColor: black
+		downFontColor: white
+		disabledFontColor: light_grey
 		up: label
+		down: label_dark
+		disabled: label_dis
+	}
+	toggle: {
+		font: OpenSans
+		fontColor: black
+		downFontColor: white
+		checkedFontColor: white
+		disabledFontColor: light_grey
+		up: label
+		down: label_dark
+		checked: label_dark
+		disabled: label_dis
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

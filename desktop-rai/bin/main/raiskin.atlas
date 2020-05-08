@@ -20,6 +20,14 @@ label_dark
   orig: 70, 72
   offset: 0, 0
   index: -1
+label_dis
+  rotate: false
+  xy: 73, 370
+  size: 70, 72
+  split: 19, 20, 19, 22
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
 OpenSans
   rotate: false
   xy: 1, 444

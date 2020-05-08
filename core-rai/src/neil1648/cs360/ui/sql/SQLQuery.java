@@ -2,7 +2,9 @@ package neil1648.cs360.ui.sql;
 
 import java.util.ArrayList;
 
-public class SQLQuery {
+import neil1648.cs360.ui.util.ILoggable;
+
+public class SQLQuery implements ILoggable {
 	
 	private boolean distinct;
 	private ArrayList<String> selections;

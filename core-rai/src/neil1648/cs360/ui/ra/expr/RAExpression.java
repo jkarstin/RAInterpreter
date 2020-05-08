@@ -1,8 +1,10 @@
 package neil1648.cs360.ui.ra.expr;
 
-public abstract class RAExpression {
+import neil1648.cs360.ui.util.ILoggable;
+
+public abstract class RAExpression implements ILoggable {
 	
-	public static enum EXPR_TYPE {
+	public static enum EXPR_TYPE implements ILoggable {
 		SMPL,
 		PROJ,
 		SLCT,

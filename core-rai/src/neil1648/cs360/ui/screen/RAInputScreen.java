@@ -1,5 +1,7 @@
 package neil1648.cs360.ui.screen;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import neil1648.cs360.ui.ra.RAParser;
+import neil1648.cs360.ui.ra.RAParser.STATUS;
 import neil1648.cs360.ui.ra.expr.RAExpression;
 import neil1648.cs360.ui.sql.RAE2SQLQ;
 import neil1648.cs360.ui.sql.SQLQuery;
@@ -32,16 +35,34 @@ public class RAInputScreen extends BaseScreen {
 	
 	private Label displayLabel;
 	
+	private RAParser rap;
+	private ArrayList<RAExpression> raeStack;
+	private String tokens;
+	private boolean gettingArg0;
+	
+	private SQLQuery sqlq;
+	
+	private void setupParser() {
+		//TODO: Integrate GUI with RAParser to allow GUI to feed RAParser one token at a time and be able to change visual state based on RAParser's current state
+		
+		this.rap = new RAParser();
+		this.raeStack = null;
+		this.tokens = "";
+		this.gettingArg0 = false;
+		this.sqlq = null;
+	}
+	
 	private void setupWidgets() {
-		this.projButton = new TextButton("PROJ", Assets.skin);
-		this.slctButton = new TextButton("SLCT", Assets.skin);
-		this.aggrButton = new TextButton("AGGR", Assets.skin);
-		this.rnamButton = new TextButton("RNAM", Assets.skin);
-		this.joinButton = new TextButton("JOIN", Assets.skin);
+		this.projButton = new TextButton("PROJ", Assets.skin, "toggle");
+		this.slctButton = new TextButton("SLCT", Assets.skin, "toggle");
+		this.aggrButton = new TextButton("AGGR", Assets.skin, "toggle");
+		this.rnamButton = new TextButton("RNAM", Assets.skin, "toggle");
+		this.joinButton = new TextButton("JOIN", Assets.skin, "toggle");
 		
 		this.valueField = new TextField("value", Assets.skin);
 		this.valueButton = new TextButton("INSERT VALUE", Assets.skin);
-		this.targetButton = new TextButton("FROM", Assets.skin);
+		this.targetButton = new TextButton("TRGT", Assets.skin);
+		this.targetButton.setDisabled(true);
 		
 		this.generateButton = new TextButton("GENERATE SQL", Assets.skin);
 		
@@ -88,7 +109,10 @@ public class RAInputScreen extends BaseScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Debug.log("PROJ button clicked");
-				write("PROJ");
+				uncheckAllButtons();
+				projButton.setChecked(true);
+				gettingArg0 = true;
+				tokens = "PROJ ";
 			}
 			
 		});
@@ -97,7 +121,10 @@ public class RAInputScreen extends BaseScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Debug.log("SLCT button clicked");
-				write("SLCT");
+				uncheckAllButtons();
+				slctButton.setChecked(true);
+				gettingArg0 = true;
+				tokens = "SLCT ";
 			}
 			
 		});
@@ -106,7 +133,10 @@ public class RAInputScreen extends BaseScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Debug.log("AGGR button clicked");
-				write("AGGR");
+				uncheckAllButtons();
+				aggrButton.setChecked(true);
+				gettingArg0 = true;
+				tokens = "AGGR ";
 			}
 			
 		});
@@ -115,7 +145,10 @@ public class RAInputScreen extends BaseScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Debug.log("RNAM button clicked");
-				write("RNAM");
+				uncheckAllButtons();
+				rnamButton.setChecked(true);
+				gettingArg0 = true;
+				tokens = "RNAM ";
 			}
 			
 		});
@@ -124,7 +157,10 @@ public class RAInputScreen extends BaseScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Debug.log("JOIN button clicked");
-				write("JOIN");
+				if (!gettingArg0) {
+					gettingArg0 = true;
+					tokens += "JOIN ";
+				}
 			}
 			
 		});
@@ -142,8 +178,12 @@ public class RAInputScreen extends BaseScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Debug.log("VALUE button clicked");
-				write(valueField.getText());
+				gettingArg0 = false;
+				tokens += valueField.getText();
+				uncheckAllButtons();
+				writeTokens();
 				valueField.setText("value");
+				updateTargetButton();
 			}
 			
 		});
@@ -151,8 +191,18 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("TARGET button clicked");
-				write("TRGT");
+				if (!targetButton.isDisabled()) {
+					Debug.log("TARGET button clicked");
+					if (!gettingArg0) {
+						tokens += targetButton.getText();
+						writeTokens();
+						targetButton.setText("TRGT");
+						targetButton.setDisabled(true);
+					}
+					else {
+						Debug.log("Invalid use of TRGT button");
+					}
+				}
 			}
 			
 		});
@@ -161,37 +211,79 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				uncheckAllButtons();
 				Debug.log("RA Expression confirmed. Generating equivalent MySQL...");
+				write("END");
 			}
 			
 		});
 	}
 	
+	private void uncheckAllButtons() {
+		this.projButton.setChecked(false);
+		this.slctButton.setChecked(false);
+		this.aggrButton.setChecked(false);
+		this.rnamButton.setChecked(false);
+		this.joinButton.setChecked(false);
+	}
+	
+	private void updateTargetButton() {
+		Debug.logv("Retrieving most recent expression type...");
+		RAExpression.EXPR_TYPE exprType = this.rap.mostRecentExpressionType();
+		
+		Debug.logv("Expression type: " + exprType);
+		
+		if (exprType != null) {
+			switch (exprType) {
+			case JOIN:
+				this.targetButton.setText("WITH");
+				break;
+			case RNAM:
+				this.targetButton.setText("ONTO");
+				break;
+			default:
+			case PROJ:
+			case SLCT:
+			case AGGR:
+				this.targetButton.setText("FROM");
+				break;
+			};
+			this.targetButton.setDisabled(false);
+		}
+		else {
+			this.targetButton.setText("TRGT");
+			this.targetButton.setDisabled(true);
+		}
+	}
+	
+	private void writeTokens() {
+		this.write(this.tokens);
+		this.tokens = "";
+	}
+	
 	private void write(String token) {
 		Debug.logv("Writing to displayLabel... " + token);
 		this.displayLabel.setText(displayLabel.getText() + " " + token);
+		Debug.logv("Passing to RAParser... " + token);
+		this.raeStack = this.rap.parse(token);
+		Debug.logv("Returned Expression Stack: " + raeStack);
+		
+		if (this.rap.exitedWith() == STATUS.END && this.raeStack.size() > 0) {
+			this.rap.resetParser();
+			this.sqlq = RAE2SQLQ.translate(this.raeStack.get(0));
+			Debug.log("Generated SQLQ\n: " + this.sqlq);
+			this.displayLabel.setText(this.displayLabel.getText() + "\n\nGenerated SQL:\n" + this.sqlq.toString());
+		}
 	}
 	
 	@Override
 	public void initialize() {
 		Gdx.input.setInputProcessor(this.stage);
 		
+		this.setupParser();
 		this.setupWidgets();
 		this.configureWidgets();
 		this.setListeners();
-		
-		//TODO: Integrate GUI with RAParser to allow GUI to feed RAParser one token at a time and be able to change visual state based on RAParser's current state
-		
-		/**/
-		//Testing
-		RAParser rap = new RAParser();
-		RAExpression rae = rap.run();
-		Debug.log(rae);
-		
-		SQLQuery sqlq = RAE2SQLQ.translate(rae);
-		
-		Debug.log(sqlq);
-		/**/
 	}
 
 	@Override
