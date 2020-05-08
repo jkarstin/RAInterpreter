@@ -1,15 +1,7 @@
 /***************************************
  * RAInterpreter.java
  * 
- * TODO: 	Integrate Aggregation
- * 			Integrate Join
- * 			Integrate Rename
- * 			Write to file
- * 			Symbol buttons on GUI
- * 			Integrate Cross
- * 			Integrate Difference
- * 			Integrate Union
- * 			Integrate Intersection
+ * TODO: 	Write to file
  * 
  * J Karstin Neill    05.07.2020
  ***************************************/

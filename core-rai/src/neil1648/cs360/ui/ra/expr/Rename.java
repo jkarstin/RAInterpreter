@@ -13,6 +13,10 @@ public class Rename extends RAExpression {
 		this.name = name;
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
 	@Override
 	public void setTarget(RAExpression t) {
 		this.target = t;

@@ -22,6 +22,10 @@ public class Join extends RAExpression {
 	public int addArgument(String argi) {
 		return this.addArgument(new SimpleExpression(argi));
 	}
+
+	public ArrayList<RAExpression> getArguments() {
+		return this.arguments;
+	}
 	
 	@Override
 	public void setTarget(RAExpression t) {

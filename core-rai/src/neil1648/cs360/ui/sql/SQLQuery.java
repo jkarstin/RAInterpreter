@@ -50,6 +50,10 @@ public class SQLQuery extends SQLTable {
 		this.setFromTarget(new BasicTable(target));
 	}
 	
+	public boolean hasFromTarget() {
+		return this.fromTarget != null;
+	}
+	
 	public int addCondition(String conditioni) {
 		int i = this.conditions.size();
 		this.conditions.add(conditioni);
@@ -82,7 +86,9 @@ public class SQLQuery extends SQLTable {
 	
 	@Override
 	public String toString() {
-		String str = "SELECT";
+		String str = "";
+		if (this.hasLabel()) str += "( ";
+		str += "SELECT";
 		if (this.distinct) str += " DISTINCT";
 		if (this.hasSelections())
 			for (String selection : this.selections)
@@ -93,14 +99,18 @@ public class SQLQuery extends SQLTable {
 			str += "( " + fromTarget + " )";
 		else str += fromTarget;
 		str += "\nWHERE {";
-		for (String condition : this.conditions)
-			str += "\n\t" + condition;
-		str += "\n}";
+		if (this.hasConditions()) {
+			for (String condition : this.conditions)
+				str += "\n\t" + condition;
+			str += "\n}";
+		}
+		else str += " }";
 		if (this.hasGroups()) {
 			str += "\nGROUP BY";
 			for (String group : this.groups)
 				str += " " + group;
 		}
+		if (this.hasLabel()) str += " ) AS " + this.label;
 		return str;
 	}
 

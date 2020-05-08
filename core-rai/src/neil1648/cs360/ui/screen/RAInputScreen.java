@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -24,11 +25,11 @@ import neil1648.cs360.ui.util.MetaData;
 
 public class RAInputScreen extends BaseScreen {
 	
-	private TextButton projButton;
-	private TextButton slctButton;
-	private TextButton aggrButton;
-	private TextButton rnamButton;
-	private TextButton joinButton;
+	private Button projButton;
+	private Button slctButton;
+	private Button aggrButton;
+	private Button rnamButton;
+	private Button joinButton;
 	
 	private TextField valueField;
 	private TextButton valueButton;
@@ -54,11 +55,11 @@ public class RAInputScreen extends BaseScreen {
 	}
 	
 	private void setupWidgets() {
-		this.projButton = new TextButton("PROJ", Assets.skin, "toggle");
-		this.slctButton = new TextButton("SLCT", Assets.skin, "toggle");
-		this.aggrButton = new TextButton("AGGR", Assets.skin, "toggle");
-		this.rnamButton = new TextButton("RNAM", Assets.skin, "toggle");
-		this.joinButton = new TextButton("JOIN", Assets.skin, "toggle");
+		this.projButton = new Button(Assets.skin, "PROJ");
+		this.slctButton = new Button(Assets.skin, "SLCT");
+		this.aggrButton = new Button(Assets.skin, "AGGR");
+		this.rnamButton = new Button(Assets.skin, "RNAM");
+		this.joinButton = new Button(Assets.skin, "JOIN");
 		
 		this.valueField = new TextField("", Assets.skin);
 		this.valueField.setMessageText("value");

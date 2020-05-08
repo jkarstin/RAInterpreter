@@ -30,6 +30,36 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		down: label_dark
 		disabled: label_dis
 	}
+	PROJ: {
+		up: label_PROJ
+		down: label_dark_PROJ
+		checked: label_dark_PROJ
+		disabled: label_dis_PROJ
+	}
+	SLCT: {
+		up: label_SLCT
+		down: label_dark_SLCT
+		checked: label_dark_SLCT
+		disabled: label_dis_SLCT
+	}
+	AGGR: {
+		up: label_AGGR
+		down: label_dark_AGGR
+		checked: label_dark_AGGR
+		disabled: label_dis_AGGR
+	}
+	RNAM: {
+		up: label_RNAM
+		down: label_dark_RNAM
+		checked: label_dark_RNAM
+		disabled: label_dis_RNAM
+	}
+	JOIN: {
+		up: label_JOIN
+		down: label_dark_JOIN
+		checked: label_dark_JOIN
+		disabled: label_dis_JOIN
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
@@ -43,6 +73,14 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		up: label
 		down: label_dark
 		checked: label
+		disabled: label_dis
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	default: {
+		up: label
+		down: label_dark
+		checked: label_dark
 		disabled: label_dis
 	}
 }
