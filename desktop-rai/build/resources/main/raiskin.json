@@ -1,0 +1,132 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	OpenSans: {
+		file: OpenSans.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	light_grey: {
+		r: 0.89333326
+		g: 0.89333326
+		b: 0.89333326
+		a: 1
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: label
+		down: label_dark
+		disabled: label_dis
+	}
+	PROJ: {
+		up: label_PROJ
+		down: label_dark_PROJ
+		checked: label_dark_PROJ
+		disabled: label_dis_PROJ
+	}
+	SLCT: {
+		up: label_SLCT
+		down: label_dark_SLCT
+		checked: label_dark_SLCT
+		disabled: label_dis_SLCT
+	}
+	AGGR: {
+		up: label_AGGR
+		down: label_dark_AGGR
+		checked: label_dark_AGGR
+		disabled: label_dis_AGGR
+	}
+	RNAM: {
+		up: label_RNAM
+		down: label_dark_RNAM
+		checked: label_dark_RNAM
+		disabled: label_dis_RNAM
+	}
+	JOIN: {
+		up: label_JOIN
+		down: label_dark_JOIN
+		checked: label_dark_JOIN
+		disabled: label_dis_JOIN
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: label
+		checkboxOff: label_dark
+		checkboxOnDisabled: label_dis
+		checkboxOffDisabled: label_dark
+		font: OpenSans
+		fontColor: black
+		disabledFontColor: light_grey
+		up: label
+		down: label_dark
+		checked: label
+		disabled: label_dis
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	default: {
+		up: label
+		down: label_dark
+		checked: label_dark
+		disabled: label_dis
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: OpenSans
+		fontColor: black
+		background: label
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: OpenSans
+		fontColor: black
+		downFontColor: white
+		disabledFontColor: light_grey
+		up: label
+		down: label_dark
+		disabled: label_dis
+	}
+	toggle: {
+		font: OpenSans
+		fontColor: black
+		downFontColor: white
+		checkedFontColor: white
+		disabledFontColor: light_grey
+		up: label
+		down: label_dark
+		checked: label_dark
+		disabled: label_dis
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: OpenSans
+		fontColor: white
+		disabledFontColor: light_grey
+		background: label_dark
+		disabledBackground: label_dis
+		messageFont: OpenSans
+		messageFontColor: light_grey
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}

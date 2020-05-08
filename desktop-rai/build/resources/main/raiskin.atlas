@@ -1,0 +1,150 @@
+
+raiskin.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+label
+  rotate: false
+  xy: 1, 371
+  size: 70, 72
+  split: 19, 20, 19, 22
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_AGGR
+  rotate: false
+  xy: 1, 223
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_JOIN
+  rotate: false
+  xy: 289, 371
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_PROJ
+  rotate: false
+  xy: 145, 149
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_RNAM
+  rotate: false
+  xy: 1, 1
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_SLCT
+  rotate: false
+  xy: 73, 75
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dark
+  rotate: false
+  xy: 1, 297
+  size: 70, 72
+  split: 19, 20, 19, 22
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dark_AGGR
+  rotate: false
+  xy: 73, 297
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dark_JOIN
+  rotate: false
+  xy: 145, 371
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dark_PROJ
+  rotate: false
+  xy: 1, 149
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dark_RNAM
+  rotate: false
+  xy: 73, 223
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dark_SLCT
+  rotate: false
+  xy: 145, 297
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dis
+  rotate: false
+  xy: 73, 371
+  size: 70, 72
+  split: 19, 20, 19, 22
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dis_AGGR
+  rotate: false
+  xy: 217, 371
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dis_JOIN
+  rotate: false
+  xy: 1, 75
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dis_PROJ
+  rotate: false
+  xy: 73, 149
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dis_RNAM
+  rotate: false
+  xy: 145, 223
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+label_dis_SLCT
+  rotate: false
+  xy: 217, 297
+  size: 70, 72
+  orig: 70, 72
+  offset: 0, 0
+  index: -1
+selection
+  rotate: false
+  xy: 1, 445
+  size: 450, 450
+  split: 54, 57, 57, 54
+  orig: 450, 450
+  offset: 0, 0
+  index: -1
+OpenSans
+  rotate: false
+  xy: 1, 897
+  size: 506, 61
+  orig: 506, 61
+  offset: 0, 0
+  index: -1

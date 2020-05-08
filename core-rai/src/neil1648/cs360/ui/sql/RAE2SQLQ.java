@@ -20,6 +20,8 @@ public class RAE2SQLQ {
 		this.sqlqStack = null;
 	}
 	
+	//TODO: Currently has a bug where a leading JOIN expression is completely ignored/lost in translation
+	
 	public SQLQuery translate(RAExpression rae) {
 		if (rae == null) return null;
 		sqlqStack = new ArrayList<SQLQuery>();
@@ -80,7 +82,7 @@ public class RAE2SQLQ {
 						else jtbl.join(value);
 						break;
 					default:
-						SQLQuery tmpSqlq = this.translate(tmpRae);
+						SQLQuery tmpSqlq = (new RAE2SQLQ()).translate(tmpRae);
 						if (jtbl == null) jtbl = new JoinTable(tmpSqlq);
 						else jtbl.join(tmpSqlq);
 						break;
@@ -96,7 +98,7 @@ public class RAE2SQLQ {
 					else jtbl.join(value);
 					break;
 				default:
-					SQLQuery tmpSqlq = this.translate(tmpRae);
+					SQLQuery tmpSqlq = (new RAE2SQLQ()).translate(tmpRae);
 					if (jtbl == null) jtbl = new JoinTable(tmpSqlq);
 					else jtbl.join(tmpSqlq);
 					break;
