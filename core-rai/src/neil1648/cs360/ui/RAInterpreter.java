@@ -13,14 +13,13 @@ import com.badlogic.gdx.Gdx;
 
 import neil1648.cs360.ui.screen.RAInputScreen;
 import neil1648.cs360.ui.util.Assets;
-import neil1648.cs360.ui.util.Debug;
-import neil1648.cs360.ui.util.Debug.DEBUG_MODE;
 
 public class RAInterpreter extends Game {
 	
 	@Override
 	public void create () {
-		Debug.setMode(DEBUG_MODE.ON_VERBOSE);
+//		Debug.setMode(DEBUG_MODE.ON);
+//		Debug.setMode(DEBUG_MODE.ON_VERBOSE);
 		new Assets();
 		this.setScreen(new RAInputScreen());
 	}

@@ -14,6 +14,10 @@ public class Debug {
 	
 	private static DEBUG_MODE MODE;
 	
+	static {
+		Debug.MODE = DEBUG_MODE.OFF;
+	}
+	
 	public static void log(String s) {
 		switch (Debug.MODE) {
 		case ON_VERBOSE:
