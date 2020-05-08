@@ -108,23 +108,27 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("PROJ button clicked");
-				uncheckAllButtons();
-				projButton.setChecked(true);
-				gettingArg0 = true;
-				tokens = "PROJ ";
+				if (!projButton.isDisabled()) {
+					Debug.log("PROJ button clicked");
+					uncheckAllButtons();
+					projButton.setChecked(true);
+					gettingArg0 = true;
+					tokens = "PROJ ";
+				}
 			}
-			
+				
 		});
 		this.slctButton.addListener(new ClickListener() {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("SLCT button clicked");
-				uncheckAllButtons();
-				slctButton.setChecked(true);
-				gettingArg0 = true;
-				tokens = "SLCT ";
+				if (!slctButton.isDisabled()) {
+					Debug.log("SLCT button clicked");
+					uncheckAllButtons();
+					slctButton.setChecked(true);
+					gettingArg0 = true;
+					tokens = "SLCT ";
+				}
 			}
 			
 		});
@@ -132,11 +136,13 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("AGGR button clicked");
-				uncheckAllButtons();
-				aggrButton.setChecked(true);
-				gettingArg0 = true;
-				tokens = "AGGR ";
+				if (!aggrButton.isDisabled()) {
+					Debug.log("AGGR button clicked");
+					uncheckAllButtons();
+					aggrButton.setChecked(true);
+					gettingArg0 = true;
+					tokens = "AGGR ";
+				}
 			}
 			
 		});
@@ -144,11 +150,13 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("RNAM button clicked");
-				uncheckAllButtons();
-				rnamButton.setChecked(true);
-				gettingArg0 = true;
-				tokens = "RNAM ";
+				if (!rnamButton.isDisabled()) {
+					Debug.log("RNAM button clicked");
+					uncheckAllButtons();
+					rnamButton.setChecked(true);
+					gettingArg0 = true;
+					tokens = "RNAM ";
+				}
 			}
 			
 		});
@@ -156,10 +164,14 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("JOIN button clicked");
-				if (!gettingArg0) {
-					gettingArg0 = true;
-					tokens += "JOIN ";
+				if (!joinButton.isDisabled()) {
+					Debug.log("JOIN button clicked");
+					uncheckAllButtons();
+					joinButton.setChecked(true);
+					if (!gettingArg0) {
+						gettingArg0 = true;
+						tokens = "JOIN ";
+					}
 				}
 			}
 			
@@ -177,13 +189,15 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("VALUE button clicked");
-				gettingArg0 = false;
-				tokens += valueField.getText();
-				uncheckAllButtons();
-				writeTokens();
-				valueField.setText("value");
-				updateTargetButton();
+				if (!valueButton.isDisabled()) {
+					Debug.log("VALUE button clicked");
+					gettingArg0 = false;
+					tokens += valueField.getText();
+					uncheckAllButtons();
+					writeTokens();
+					valueField.setText("value");
+					updateTargetButton();
+				}
 			}
 			
 		});
@@ -198,6 +212,7 @@ public class RAInputScreen extends BaseScreen {
 						writeTokens();
 						targetButton.setText("TRGT");
 						targetButton.setDisabled(true);
+						enableTargetingButtons();
 					}
 					else {
 						Debug.log("Invalid use of TRGT button");
@@ -211,12 +226,28 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				uncheckAllButtons();
 				Debug.log("RA Expression confirmed. Generating equivalent MySQL...");
+				uncheckAllButtons();
 				write("END");
 			}
 			
 		});
+	}
+	
+	private void disableTargetingButtons() {
+		this.projButton.setDisabled(true);
+		this.slctButton.setDisabled(true);
+		this.aggrButton.setDisabled(true);
+		this.rnamButton.setDisabled(true);
+		this.joinButton.setDisabled(true);
+	}
+	
+	private void enableTargetingButtons() {
+		this.projButton.setDisabled(false);
+		this.slctButton.setDisabled(false);
+		this.aggrButton.setDisabled(false);
+		this.rnamButton.setDisabled(false);
+		this.joinButton.setDisabled(false);
 	}
 	
 	private void uncheckAllButtons() {
@@ -237,7 +268,8 @@ public class RAInputScreen extends BaseScreen {
 			switch (exprType) {
 			case JOIN:
 				this.targetButton.setText("WITH");
-				break;
+				this.targetButton.setDisabled(false);
+				return;
 			case RNAM:
 				this.targetButton.setText("ONTO");
 				break;
@@ -249,6 +281,7 @@ public class RAInputScreen extends BaseScreen {
 				break;
 			};
 			this.targetButton.setDisabled(false);
+			this.disableTargetingButtons();
 		}
 		else {
 			this.targetButton.setText("TRGT");
