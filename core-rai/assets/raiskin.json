@@ -24,6 +24,28 @@ com.badlogic.gdx.graphics.Color: {
 		a: 1
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: label
+		down: label_dark
+		disabled: label_dis
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: label
+		checkboxOff: label_dark
+		checkboxOnDisabled: label_dis
+		checkboxOffDisabled: label_dark
+		font: OpenSans
+		fontColor: black
+		disabledFontColor: light_grey
+		up: label
+		down: label_dark
+		checked: label
+		disabled: label_dis
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: OpenSans
@@ -57,7 +79,11 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: OpenSans
 		fontColor: white
+		disabledFontColor: light_grey
 		background: label_dark
+		disabledBackground: label_dis
+		messageFont: OpenSans
+		messageFontColor: light_grey
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

@@ -3,7 +3,9 @@ package neil1648.cs360.ui.screen;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -32,6 +34,7 @@ public class RAInputScreen extends BaseScreen {
 	private TextButton targetButton;
 	
 	private TextButton generateButton;
+	private TextButton resetButton;
 	
 	private Label displayLabel;
 	
@@ -46,10 +49,6 @@ public class RAInputScreen extends BaseScreen {
 		//TODO: Integrate GUI with RAParser to allow GUI to feed RAParser one token at a time and be able to change visual state based on RAParser's current state
 		
 		this.rap = new RAParser();
-		this.raeStack = null;
-		this.tokens = "";
-		this.gettingArg0 = false;
-		this.sqlq = null;
 	}
 	
 	private void setupWidgets() {
@@ -59,12 +58,13 @@ public class RAInputScreen extends BaseScreen {
 		this.rnamButton = new TextButton("RNAM", Assets.skin, "toggle");
 		this.joinButton = new TextButton("JOIN", Assets.skin, "toggle");
 		
-		this.valueField = new TextField("value", Assets.skin);
+		this.valueField = new TextField("", Assets.skin);
+		this.valueField.setMessageText("value");
 		this.valueButton = new TextButton("INSERT VALUE", Assets.skin);
 		this.targetButton = new TextButton("TRGT", Assets.skin);
-		this.targetButton.setDisabled(true);
 		
 		this.generateButton = new TextButton("GENERATE SQL", Assets.skin);
+		this.resetButton = new TextButton("RESET", Assets.skin);
 		
 		this.displayLabel = new Label("", Assets.skin);
 		
@@ -79,6 +79,7 @@ public class RAInputScreen extends BaseScreen {
 		this.stage.addActor(this.targetButton);
 		
 		this.stage.addActor(this.generateButton);
+		this.stage.addActor(this.resetButton);
 		
 		this.stage.addActor(this.displayLabel);
 	}
@@ -96,6 +97,7 @@ public class RAInputScreen extends BaseScreen {
 		this.targetButton.setPosition(20f, 20f);
 		
 		this.generateButton.setPosition(MetaData.VIRTUAL_WIDTH-20f, 20f, Align.bottomRight);
+		this.resetButton.setPosition(MetaData.VIRTUAL_WIDTH-200f, 20f, Align.bottomRight);
 		
 		this.displayLabel.setSize(MetaData.VIRTUAL_WIDTH-200f, MetaData.VIRTUAL_HEIGHT-200f);
 		this.displayLabel.setPosition(MetaData.VIRTUAL_WIDTH/2f, MetaData.VIRTUAL_HEIGHT/2f, Align.center);
@@ -110,8 +112,10 @@ public class RAInputScreen extends BaseScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (!projButton.isDisabled()) {
 					Debug.log("PROJ button clicked");
-					uncheckAllButtons();
+					uncheckTargetingButtons();
 					projButton.setChecked(true);
+					valueField.setDisabled(false);
+					valueButton.setDisabled(false);
 					gettingArg0 = true;
 					tokens = "PROJ ";
 				}
@@ -124,8 +128,10 @@ public class RAInputScreen extends BaseScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (!slctButton.isDisabled()) {
 					Debug.log("SLCT button clicked");
-					uncheckAllButtons();
+					uncheckTargetingButtons();
 					slctButton.setChecked(true);
+					valueField.setDisabled(false);
+					valueButton.setDisabled(false);
 					gettingArg0 = true;
 					tokens = "SLCT ";
 				}
@@ -138,8 +144,10 @@ public class RAInputScreen extends BaseScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (!aggrButton.isDisabled()) {
 					Debug.log("AGGR button clicked");
-					uncheckAllButtons();
+					uncheckTargetingButtons();
 					aggrButton.setChecked(true);
+					valueField.setDisabled(false);
+					valueButton.setDisabled(false);
 					gettingArg0 = true;
 					tokens = "AGGR ";
 				}
@@ -152,8 +160,10 @@ public class RAInputScreen extends BaseScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (!rnamButton.isDisabled()) {
 					Debug.log("RNAM button clicked");
-					uncheckAllButtons();
+					uncheckTargetingButtons();
 					rnamButton.setChecked(true);
+					valueField.setDisabled(false);
+					valueButton.setDisabled(false);
 					gettingArg0 = true;
 					tokens = "RNAM ";
 				}
@@ -166,9 +176,11 @@ public class RAInputScreen extends BaseScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (!joinButton.isDisabled()) {
 					Debug.log("JOIN button clicked");
-					uncheckAllButtons();
-					joinButton.setChecked(true);
 					if (!gettingArg0) {
+						uncheckTargetingButtons();
+						joinButton.setChecked(true);
+						valueField.setDisabled(false);
+						valueButton.setDisabled(false);
 						gettingArg0 = true;
 						tokens = "JOIN ";
 					}
@@ -181,7 +193,34 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				stage.setKeyboardFocus(valueField);
+				if (!valueField.isDisabled()) {
+					stage.setKeyboardFocus(valueField);
+					valueField.setText("");
+				}
+			}
+			
+		});
+		this.valueField.addListener(new InputListener() {
+			
+			@Override
+			public boolean keyDown(InputEvent event, int keycode) {
+				if (!valueField.isDisabled()) {
+					switch (keycode) {
+					case Input.Keys.ENTER:
+						Debug.log("ENTER key pressed");
+						gettingArg0 = false;
+						tokens += valueField.getText();
+						uncheckTargetingButtons();
+						writeTokens();
+						valueField.setText("value");
+						updateTargetButton();
+						return true;
+					default:
+						break;
+					};
+				}
+				
+				return false;
 			}
 			
 		});
@@ -193,7 +232,7 @@ public class RAInputScreen extends BaseScreen {
 					Debug.log("VALUE button clicked");
 					gettingArg0 = false;
 					tokens += valueField.getText();
-					uncheckAllButtons();
+					uncheckTargetingButtons();
 					writeTokens();
 					valueField.setText("value");
 					updateTargetButton();
@@ -213,6 +252,7 @@ public class RAInputScreen extends BaseScreen {
 						targetButton.setText("TRGT");
 						targetButton.setDisabled(true);
 						enableTargetingButtons();
+						generateButton.setDisabled(false);
 					}
 					else {
 						Debug.log("Invalid use of TRGT button");
@@ -226,12 +266,44 @@ public class RAInputScreen extends BaseScreen {
 			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Debug.log("RA Expression confirmed. Generating equivalent MySQL...");
-				uncheckAllButtons();
-				write("END");
+				if (!generateButton.isDisabled()) {
+					Debug.log("RA Expression confirmed. Generating equivalent MySQL...");
+					write("END");
+					disableTargetingButtons();
+					valueField.setDisabled(true);
+					valueButton.setDisabled(true);
+					generateButton.setDisabled(true);
+					resetButton.setDisabled(false);
+				}
 			}
 			
 		});
+		this.resetButton.addListener(new ClickListener() {
+			
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (!resetButton.isDisabled()) {
+					Debug.log("Resetting interpreter...");
+					resetToDefaultStates();
+				}
+			}
+			
+		});
+	}
+	
+	private void resetToDefaultStates() {
+		this.raeStack = null;
+		this.tokens = "";
+		this.gettingArg0 = false;
+		this.sqlq = null;
+		this.rap.resetParser();
+		this.displayLabel.setText("");
+		this.enableTargetingButtons();
+		this.valueField.setDisabled(true);
+		this.valueButton.setDisabled(true);
+		this.targetButton.setDisabled(true);
+		this.generateButton.setDisabled(true);
+		this.resetButton.setDisabled(true);
 	}
 	
 	private void disableTargetingButtons() {
@@ -250,7 +322,7 @@ public class RAInputScreen extends BaseScreen {
 		this.joinButton.setDisabled(false);
 	}
 	
-	private void uncheckAllButtons() {
+	private void uncheckTargetingButtons() {
 		this.projButton.setChecked(false);
 		this.slctButton.setChecked(false);
 		this.aggrButton.setChecked(false);
@@ -302,7 +374,6 @@ public class RAInputScreen extends BaseScreen {
 		Debug.logv("Returned Expression Stack: " + raeStack);
 		
 		if (this.rap.exitedWith() == STATUS.END && this.raeStack.size() > 0) {
-			this.rap.resetParser();
 			this.sqlq = RAE2SQLQ.translate(this.raeStack.get(0));
 			Debug.log("Generated SQLQ\n: " + this.sqlq);
 			this.displayLabel.setText(this.displayLabel.getText() + "\n\nGenerated SQL:\n" + this.sqlq.toString());
@@ -317,6 +388,8 @@ public class RAInputScreen extends BaseScreen {
 		this.setupWidgets();
 		this.configureWidgets();
 		this.setListeners();
+		
+		this.resetToDefaultStates();
 	}
 
 	@Override
