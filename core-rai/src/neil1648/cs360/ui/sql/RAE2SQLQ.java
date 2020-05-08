@@ -1,5 +1,8 @@
 package neil1648.cs360.ui.sql;
 
+import java.util.ArrayList;
+
+import neil1648.cs360.ui.ra.expr.Aggregation;
 import neil1648.cs360.ui.ra.expr.Projection;
 import neil1648.cs360.ui.ra.expr.RAExpression;
 import neil1648.cs360.ui.ra.expr.RAExpression.EXPR_TYPE;
@@ -8,8 +11,15 @@ import neil1648.cs360.ui.ra.expr.SimpleExpression;
 
 public class RAE2SQLQ {
 	
-	public static SQLQuery translate(RAExpression rae) {
+	private ArrayList<SQLQuery> sqlqStack;
+	
+	public RAE2SQLQ() {
+		this.sqlqStack = null;
+	}
+	
+	public SQLQuery translate(RAExpression rae) {
 		if (rae == null) return null;
+		sqlqStack = new ArrayList<SQLQuery>();
 		
 		SQLQuery sqlq = new SQLQuery();
 		
@@ -25,8 +35,12 @@ public class RAE2SQLQ {
 			
 			switch (raeType) {
 			case PROJ:
-				//Handle conflict with AGGR, since the two are mutually exclusive
-				//Solution(?): if Aggregation columns are present, set FROM to the wrapped value of a new PROJ-based SQLQ
+				//If groups exist, push current sqlq onto stack and start new nested sqlq
+				if (sqlq.hasGroups()) {
+					pushSqlq(sqlq);
+					sqlq = new SQLQuery();
+				}
+				//Add Projection columns to current SQLQuery selections
 				sqlq.addSelections(((Projection)currentExpr).getColumns());
 				break;
 			case SLCT:
@@ -35,9 +49,13 @@ public class RAE2SQLQ {
 			case RNAM:
 				break;
 			case AGGR:
-				//Add filters for group columns as ORDER BY
-				//Handle conflict with PROJ, since the two are mutually exclusive
-				//Solution(?): if Projection columns are present, set FROM to the wrapped value of a new AGGR-based SQLQ
+				if (sqlq.hasSelections() && !sqlq.hasGroups()) {
+					pushSqlq(sqlq);
+					sqlq = new SQLQuery();
+				}
+				//Add actions to current SQLQuery selections and groups to GROUP BY groups
+				sqlq.addSelections(((Aggregation)currentExpr).getActions());
+				sqlq.addGroups(((Aggregation)currentExpr).getGroups());
 				break;
 			case JOIN:
 				break;
@@ -52,7 +70,33 @@ public class RAE2SQLQ {
 		//raeType == EXPR_TYPE.SMPL
 		sqlq.setFromTarget(((SimpleExpression)currentExpr).getValue());
 		
+		SQLQuery tmpSqlq;
+		while ((tmpSqlq = popSqlq()) != null) {
+			tmpSqlq.setFromTarget(sqlq);
+			sqlq = tmpSqlq;
+		}
+		
 		return sqlq;
 	}
+	
+	/*** Stack Utilities ***/
+	
+	private int pushSqlq(SQLQuery sqlq) {
+		int i = this.sqlqStack.size();
+		this.sqlqStack.add(sqlq);
+		return i;
+	}
+	
+	private SQLQuery popSqlq() {
+		if (this.sqlqStack.size() > 0)
+			return this.sqlqStack.remove(this.sqlqStack.size()-1);
+		return null;
+	}
+	
+//	private SQLQuery peekSqlq() {
+//		if (this.sqlqStack.size() > 0)
+//			return this.sqlqStack.get(this.sqlqStack.size()-1);
+//		return null;
+//	}
 
 }

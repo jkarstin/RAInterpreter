@@ -1,7 +1,7 @@
 package neil1648.cs360.ui.screen;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -32,6 +32,7 @@ public class RAInputScreen extends BaseScreen {
 	
 	private TextField valueField;
 	private TextButton valueButton;
+	private TextButton grupButton;
 	private TextButton targetButton;
 	
 	private TextButton generateButton;
@@ -62,6 +63,7 @@ public class RAInputScreen extends BaseScreen {
 		this.valueField = new TextField("", Assets.skin);
 		this.valueField.setMessageText("value");
 		this.valueButton = new TextButton("INSERT VALUE", Assets.skin);
+		this.grupButton = new TextButton("GRUP", Assets.skin, "toggle");
 		this.targetButton = new TextButton("TRGT", Assets.skin);
 		
 		this.generateButton = new TextButton("GENERATE SQL", Assets.skin);
@@ -77,6 +79,7 @@ public class RAInputScreen extends BaseScreen {
 		
 		this.stage.addActor(this.valueField);
 		this.stage.addActor(this.valueButton);
+		this.stage.addActor(this.grupButton);
 		this.stage.addActor(this.targetButton);
 		
 		this.stage.addActor(this.generateButton);
@@ -95,6 +98,7 @@ public class RAInputScreen extends BaseScreen {
 		this.valueField.setSize(200f, 60f);
 		this.valueField.setPosition(100f, 20f);
 		this.valueButton.setPosition(320f, 20f);
+		this.grupButton.setPosition(20f, 100f);
 		this.targetButton.setPosition(20f, 20f);
 		
 		this.generateButton.setPosition(MetaData.VIRTUAL_WIDTH-20f, 20f, Align.bottomRight);
@@ -241,6 +245,22 @@ public class RAInputScreen extends BaseScreen {
 			}
 			
 		});
+		this.grupButton.addListener(new ClickListener() {
+			
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (!grupButton.isDisabled()) {
+					Debug.log("GRUP button clicked");
+					uncheckTargetingButtons();
+					grupButton.setChecked(true);
+					valueField.setDisabled(false);
+					valueButton.setDisabled(false);
+					gettingArg0 = true;
+					tokens = "GRUP ";
+				}
+			}
+			
+		});
 		this.targetButton.addListener(new ClickListener() {
 			
 			@Override
@@ -250,6 +270,7 @@ public class RAInputScreen extends BaseScreen {
 					if (!gettingArg0) {
 						tokens += targetButton.getText();
 						writeTokens();
+						grupButton.setDisabled(true);
 						targetButton.setText("TRGT");
 						targetButton.setDisabled(true);
 						enableTargetingButtons();
@@ -273,6 +294,7 @@ public class RAInputScreen extends BaseScreen {
 					disableTargetingButtons();
 					valueField.setDisabled(true);
 					valueButton.setDisabled(true);
+					grupButton.setDisabled(true);
 					generateButton.setDisabled(true);
 					resetButton.setDisabled(false);
 				}
@@ -302,6 +324,7 @@ public class RAInputScreen extends BaseScreen {
 		this.enableTargetingButtons();
 		this.valueField.setDisabled(true);
 		this.valueButton.setDisabled(true);
+		this.grupButton.setDisabled(true);
 		this.targetButton.setDisabled(true);
 		this.generateButton.setDisabled(true);
 		this.resetButton.setDisabled(true);
@@ -327,6 +350,7 @@ public class RAInputScreen extends BaseScreen {
 		this.projButton.setChecked(false);
 		this.slctButton.setChecked(false);
 		this.aggrButton.setChecked(false);
+		this.grupButton.setChecked(false);
 		this.rnamButton.setChecked(false);
 		this.joinButton.setChecked(false);
 	}
@@ -346,10 +370,11 @@ public class RAInputScreen extends BaseScreen {
 			case RNAM:
 				this.targetButton.setText("ONTO");
 				break;
+			case AGGR:
+				this.grupButton.setDisabled(false);
 			default:
 			case PROJ:
-			case SLCT:
-			case AGGR:
+			case SLCT:			
 				this.targetButton.setText("FROM");
 				break;
 			};
@@ -374,10 +399,15 @@ public class RAInputScreen extends BaseScreen {
 		this.raeStack = this.rap.parse(token);
 		Debug.logv("Returned Expression Stack: " + raeStack);
 		
-		if (this.rap.exitedWith() == STATUS.END && this.raeStack.size() > 0) {
-			this.sqlq = RAE2SQLQ.translate(this.raeStack.get(0));
-			Debug.log("Generated SQLQ\n: " + this.sqlq);
-			this.displayLabel.setText(this.displayLabel.getText() + "\n\nGenerated SQL:\n" + this.sqlq.toString());
+		if (this.rap.exitedWith() == STATUS.END) {
+			Debug.log("Generated SQLQ:");
+			this.displayLabel.setText(this.displayLabel.getText() + "\n\nGenerated SQLQ:\n");
+			RAE2SQLQ rae2sqlq = new RAE2SQLQ();
+			for (RAExpression expr : this.raeStack) {
+				this.sqlq = rae2sqlq.translate(expr);
+				Debug.log(this.sqlq);
+				this.displayLabel.setText(this.displayLabel.getText() + this.sqlq.toString());
+			}
 		}
 	}
 	

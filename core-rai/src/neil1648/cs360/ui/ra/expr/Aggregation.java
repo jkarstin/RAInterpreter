@@ -26,6 +26,14 @@ public class Aggregation extends RAExpression {
 		return i;
 	}
 	
+	public ArrayList<String> getGroups() {
+		return this.groups;
+	}
+	
+	public ArrayList<String> getActions() {
+		return this.actions;
+	}
+	
 	@Override
 	public void setTarget(RAExpression t) {
 		this.target = t;

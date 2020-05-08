@@ -1,3 +1,19 @@
+/***************************************
+ * RAInterpreter.java
+ * 
+ * TODO: 	Integrate Aggregation
+ * 			Integrate Join
+ * 			Integrate Rename
+ * 			Write to file
+ * 			Symbol buttons on GUI
+ * 			Integrate Cross
+ * 			Integrate Difference
+ * 			Integrate Union
+ * 			Integrate Intersection
+ * 
+ * J Karstin Neill    05.07.2020
+ ***************************************/
+
 package neil1648.cs360.ui;
 
 import com.badlogic.gdx.Game;
