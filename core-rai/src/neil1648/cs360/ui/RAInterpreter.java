@@ -12,7 +12,7 @@ public class RAInterpreter extends Game {
 	
 	@Override
 	public void create () {
-		Debug.setMode(DEBUG_MODE.ON);
+		Debug.setMode(DEBUG_MODE.ON_VERBOSE);
 		new Assets();
 		this.setScreen(new RAInputScreen());
 	}

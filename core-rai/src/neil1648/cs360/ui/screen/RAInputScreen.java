@@ -1,6 +1,7 @@
 package neil1648.cs360.ui.screen;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -383,6 +384,16 @@ public class RAInputScreen extends BaseScreen {
 	@Override
 	public void initialize() {
 		Gdx.input.setInputProcessor(this.stage);
+		
+		/*/
+		RAParser rap0 = new RAParser();
+		Scanner sc = new Scanner(System.in);
+		ArrayList<RAExpression> exprStack = new ArrayList<RAExpression>();
+		do {
+			exprStack = rap0.parse(sc.nextLine());
+		} while (rap0.exitedWith() != STATUS.END);
+		sc.close();
+		/**/
 		
 		this.setupParser();
 		this.setupWidgets();
